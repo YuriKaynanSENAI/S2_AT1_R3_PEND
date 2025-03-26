@@ -255,3 +255,45 @@ body {
   color: #0f2a1d;
   transition: 0.7s;
 }
+
+@media screen and (max-width: 768px) {
+  .container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+  .image_container {
+    border-radius: 30px 30px 0 0;
+  }
+  .image_container h1 {
+    font-size: 30px;
+  }
+  .image_container p {
+    font-size: 10px;
+  }
+  #cadastroForm {
+    padding: 15px;
+  }
+  .cloud:nth-child(3) {
+    top: 7.5%;
+    left: 66%;
+  }
+  .cloud:nth-child(2) {
+    top: 2.5%;
+    left: 39%;
+  }
+  .cloud:nth-child(1) {
+    top: 2.5%;
+    left: 65%;
+  }
+  .cloud {
+    position: absolute;
+    width: 300px;
+    height: 100px;
+    background: url("../images/nuvem.png") center / cover no-repeat;
+    filter: drop-shadow(2px 2px 20px #e3eed4);
+  }
+  .rain {
+    display: none; /* Oculta a chuva em telas maiores */
+  }
+}
