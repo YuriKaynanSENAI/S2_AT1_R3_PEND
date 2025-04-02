@@ -1,74 +1,82 @@
-console.log("JS CONECTADO"); // Mensagem no console para indicar que o script está carregado corretamente.
+console.log("JS CONECTADO!");
 
-const formulario = document.getElementById("cadastroForm"); // Obtém o formulário pelo ID
-const nome = document.getElementById("nome"); // Obtém o campo de nome
-const email = document.getElementById("email"); // Obtém o campo de e-mail
-const password = document.getElementById("password"); // Obtém o campo de senha
-const COpassword = document.getElementById("COpassword"); // Obtém o campo de confirmação de senha
-const tel = document.getElementById("tel"); // Obtém o campo de telefone
-const CPF = document.getElementById("CPF"); // Obtém o campo de CPF
-const RG = document.getElementById("RG"); // Obtém o campo de RG
-const msgError = document.getElementsByClassName("msgError"); // Obtém o elemento onde será exibida a mensagem de erro
+const formulario = document.getElementById("cadastroForm");
+const nome = document.getElementById("nome");
+const email = document.getElementById("email");
+const password = document.getElementById("password");
+const COpassword = document.getElementById("COpassword");
+const tel = document.getElementById("tel");
+const CPF = document.getElementById("CPF");
+const RG = document.getElementById("RG");
+const msgError = document.getElementsByClassName("msgError");
 
-/* ------ FUNÇÃO PARA EXIBIR UMA MENSAGEM DE ERRO NO FORMULÁRIO ------ */
+/* ------ FUNÇÃO PARA RENDERIZAR AS DIFERENTES MENSAGENS DE ERRO! ------ */
 const createDisplayMsgError = (mensagem) => {
-  msgError[0].textContent = mensagem; // Define o texto da primeira classe 'msgError' como a mensagem de erro passada
+  msgError[0].textContent = mensagem;
 };
+/* --------------------------------------------------------------------- */
 
-/* ---------------- FUNÇÃO PARA VALIDAR O NOME ----------------------- */
-const chekNome = () => {
-  const nomeRegex = /^[A-Za-zÀ-ÿ\s]+$/; // Expressão regular para permitir apenas letras e espaços
-  return nomeRegex.test(nome.value); // Retorna verdadeiro se o nome estiver no formato correto
+/* ---------------- FUNÇÃO PARA VERIFICAR O NOME ----------------------- */
+const checkNome = () => {
+  const nomeRegex = /^[A-Za-zÀ-ÿ\s]+$/;
+  return nomeRegex.test(nome.value);
 };
+/* --------------------------------------------------------------------- */
 
-/* ---------- FUNÇÃO PARA VALIDAR O E-MAIL --------------------- */
-const chekEmail = (email) => {
-  const partesEmail = email.split("@"); // Divide o e-mail pelo símbolo '@'
+/* ---------- FUNÇÃO PARA VERIFICAR O EMAIL --------------------- */
+const checkEmail = (email) => {
+  const partesEmail = email.split("@");
 
-  // Verifica se o e-mail pertence a um dos domínios permitidos
-  return (
-    partesEmail.length === 2 &&
-    ["gmail.com", "outlook.com", "hotmail.com"].includes(
-      partesEmail[1].toLowerCase()
-    )
-  );
+  if (
+    (partesEmail.length === 2 &&
+      partesEmail[1].toLowerCase() === "gmail.com") ||
+    (partesEmail.length === 2 &&
+      partesEmail[1].toLowerCase() === "outlook.com") ||
+    (partesEmail.length === 2 && partesEmail[1].toLowerCase() === "hotmail.com")
+  ) {
+    return true;
+  } else {
+    return false;
+  }
 };
+/* --------------------------------------------------------------------- */
 
-/* ---------- FUNÇÃO PARA VERIFICAR SE AS SENHAS COINCIDEM --------------- */
-function chekPasswordMatch() {
-  return password.value === COpassword.value; // Retorna verdadeiro se as senhas forem iguais
+/* ---------- FUNÇÃO PARA VERIFICAR IGUALDADE DAS SENHAS --------------- */
+function checkPasswordMatch() {
+  return password.value === confirmarSenha.value ? true : false;
 }
+/* --------------------------------------------------------------------- */
 
-/* ----------- FUNÇÃO PARA INSERIR MÁSCARA NO TELEFONE ----------------- */
+/* ----------- FUNÇÃO PARA INSERIR MASCARA NO TELEFONE ----------------- */
+
 function maskPhoneNumber(event) {
   let tel = event.target.value;
 
   if (/[A-Za-zÀ-ÿ]/.test(tel)) {
-    // Verifica se há letras no telefone
     createDisplayMsgError("O celular deve conter apenas números!");
   } else {
     createDisplayMsgError("");
   }
 
-  tel = tel.replace(/\D/g, ""); // Remove todos os caracteres que não sejam números
+  tel = tel.replace(/\D/g, ""); // Remove os caracteres não numéricos
 
   if (tel.length > 11) {
-    tel = tel.substring(0, 11); // Limita o tamanho do telefone
+    tel = tel.substring(0, 11);
   }
 
-  // Adiciona a máscara de telefone no formato (XX) XXXXX-XXXX
   if (tel.length > 2) {
     tel = `(${tel.substring(0, 2)}) ${tel.substring(2)}`;
   } else if (tel.length > 0) {
-    tel = `(${tel})`;
+    tel = `(${tel}`;
   }
 
   if (tel.length > 10) {
     tel = tel.replace(/(\(\d{2}\)) (\d{5})(\d{1,4})/, "$1 $2-$3");
   }
 
-  event.target.value = tel; // Atualiza o valor do campo
+  event.target.value = tel;
 }
+/* --------------------------------------------------------------------- */
 
 /* ----------- FUNÇÃO PARA INSERIR MÁSCARA NO CPF ----------------- */
 function maskCPF(event) {
@@ -85,6 +93,7 @@ function maskCPF(event) {
 }
 
 CPF.addEventListener("input", maskCPF); // Aplica a máscara ao campo CPF enquanto o usuário digita
+/* --------------------------------------------------------------------- */
 
 /* ----------- FUNÇÃO PARA INSERIR MÁSCARA NO RG ----------------- */
 function maskRG(event) {
@@ -101,20 +110,29 @@ function maskRG(event) {
 }
 
 RG.addEventListener("input", maskRG); // Aplica a máscara ao campo RG enquanto o usuário digita
+/* --------------------------------------------------------------------- */
 
-/* ------------- FUNÇÃO PARA VERIFICAR A FORÇA DA SENHA ------------------ */
-function chekPasswordStrength(password) {
-  if (!/[a-z]/.test(password))
+/* ------------- FUNÇÃO PARA VERIFICAR FORÇA DA SENHA ------------------ */
+function checkPasswordStrength(password) {
+  if (!/[a-z]/.test(password)) {
     return "A senha deve ter pelo menos uma letra minúscula!";
-  if (!/[A-Z]/.test(password))
+  }
+  if (!/[A-Z]/.test(password)) {
     return "A senha deve ter pelo menos uma letra maiúscula!";
-  if (!/[\W_]/.test(password))
+  }
+  if (!/[\W_]/.test(password)) {
     return "A senha deve ter pelo menos um caractere especial!";
-  if (!/\d/.test(password)) return "A senha deve ter pelo menos um número!";
-  if (password.length < 8) return "A senha deve ter pelo menos 8 caracteres!";
+  }
+  if (!/\d/.test(password)) {
+    return "A senha deve ter pelo menos um número!";
+  }
+  if (password.length < 8) {
+    return "A senha deve ter pelo menos 8 caracteres!";
+  }
 
-  return null; // Retorna null se a senha atender a todos os requisitos
+  return null;
 }
+/* --------------------------------------------------------------------- */
 
 /* ------------- FUNÇÃO PARA CRIAR "CHUVA" NO FORMULÁRIO ------------------ */
 const rainFunction = () => {
@@ -134,41 +152,42 @@ const rainFunction = () => {
 };
 
 setInterval(rainFunction, 250); // Chama a função a cada 250ms para criar o efeito de chuva
+/* --------------------------------------------------------------------- */
 
-/* ------------- FUNÇÃO PARA VALIDAR E ENVIAR OS DADOS DO FORMULÁRIO ------------------ */
+/* ------------- FUNÇÃO PARA VERIFICAR E ENVIAR DADOS ------------------ */
 function fetchDatas(event) {
-  event.preventDefault(); // Impede o envio padrão do formulário
+  event.preventDefault();
 
-  // Valida cada campo antes de prosseguir
-  if (!chekNome(nome.value)) {
+  if (!checkNome) {
     createDisplayMsgError(
       "O nome não pode conter números ou caracteres especiais!"
     );
     return;
   }
 
-  if (!chekEmail(email.value)) {
-    createDisplayMsgError("O e-mail digitado não é válido!");
+  if (!checkEmail(email.value)) {
+    createDisplayMsgError(
+      "O nome não pode conter números ou caracteres especiais!"
+    );
     return;
   }
 
-  if (!chekPasswordMatch()) {
+  if (!checkPasswordMatch()) {
     createDisplayMsgError("As senhas digitadas não coincidem!");
     return;
   }
 
-  const senhaError = chekPasswordStrength(password.value);
+  const senhaError = checkPasswordStrength(password.value);
   if (senhaError) {
     createDisplayMsgError(senhaError);
     return;
   }
 
-  if (tel.value && /[A-Za-zÀ-ÿ]/.test(tel.value)) {
+  if (celular.value && /[A-Za-zÀ-ÿ]/.test(tel.value)) {
     createDisplayMsgError("O telefone deve conter apenas números");
     return;
   }
 
-  // Cria um objeto com os dados do formulário
   const formData = {
     nome: nome.value,
     email: email.value,
@@ -180,5 +199,90 @@ function fetchDatas(event) {
 
   console.log("Formulário Enviado: ", JSON.stringify(formData, null, 2));
 }
+/* --------------------------------------------------------------------- */
 
-formulario.addEventListener("submit", fetchDatas); // Adiciona evento de envio ao formulário
+/* ------------- FUNÇÃO PARA VALIDAR E ENVIAR OS DADOS DO FORMULÁRIO ------------------ */
+function fetchDatas(event) {
+  event.preventDefault(); // Impede o envio padrão do formulário
+
+  // Valida cada campo antes de prosseguir
+  if (!checkNome(nome.value)) {
+    createDisplayMsgError(
+      "O nome não pode conter números ou caracteres especiais!"
+    );
+    return;
+  }
+
+  if (!checkEmail(email.value)) {
+    createDisplayMsgError("O e-mail digitado não é válido!");
+    return;
+  }
+
+  if (!checkPasswordMatch()) {
+    createDisplayMsgError("As senhas digitadas não coincidem!");
+    return;
+  }
+
+  const senhaError = checkPasswordStrength(password.value);
+  if (senhaError) {
+    createDisplayMsgError(senhaError);
+    return;
+  }
+
+  if (tel.value && /[A-Za-zÀ-ÿ]/.test(tel.value)) {
+    createDisplayMsgError("O telefone deve conter apenas números");
+    return;
+  }
+  formulario.addEventListener("submit", fetchDatas);
+}
+/* --------------------------------------------------------------------- */
+
+/* ------------- ADICIONANDO EVENTOS------------------ */
+nome.addEventListener("input", () => {
+  if (nome.value && !checkNome()) {
+    createDisplayMsgError(
+      "O nome não pode conter números ou caracteres especiais!"
+    );
+  } else {
+    createDisplayMsgError("");
+  }
+});
+
+email.addEventListener("input", () => {
+  if (email.value && !checkEmail(email.value)) {
+    createDisplayMsgError("O e-mail digitado não é valido!");
+  } else {
+    createDisplayMsgError("");
+  }
+});
+
+password.addEventListener("input", () => {
+  if (password.value && checkPasswordStrength(password.value)) {
+    createDisplayMsgError(checkPasswordStrength(password.value));
+  } else {
+    createDisplayMsgError("");
+  }
+});
+/* --------------------------------------------------------------------- */
+
+function checkPasswordStrength(password) {
+  if (!/[a-z]/.test(password)) {
+    return "A senha deve ter pelo menos uma letra minúscula!";
+  }
+  if (!/[A-Z]/.test(password)) {
+    return "A senha deve ter pelo menos uma letra maiúscula!";
+  }
+  if (!/[\W_]/.test(password)) {
+    return "A senha deve ter pelo menos um caractere especial!";
+  }
+  if (!/\d/.test(password)) {
+    return "A senha deve ter pelo menos um número!";
+  }
+  if (password.length < 8) {
+    return "A senha deve ter pelo menos 8 caracteres!";
+  }
+
+  return null;
+}
+
+tel.addEventListener("input", maskPhoneNumber);

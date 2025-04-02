@@ -57,18 +57,17 @@ body {
 }
 
 .rain {
-  background-color: #e3eed4;
-  width: 5px;
-  height: 5px;
-  border-radius: 0 50% 50% 50%;
-  transform: rotate(45deg);
-  box-shadow: inset -25px 10px 0px -10px #fefefe;
-  z-index: 500;
-  position: absolute;
-  top: 90px;
+  background: url("../images/Capturar-removebg-preview.png") center / cover
+    no-repeat;
 
-  transform-origin: bottom;
-  animation: animate 2s linear infinite;
+  width: 60px;
+  height: 60px;
+
+  z-index: 1000;
+  position: absolute;
+  top: 70px;
+
+  animation: animate 4s infinite;
 }
 
 @keyframes animate {
